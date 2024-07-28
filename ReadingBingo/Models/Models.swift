@@ -4,7 +4,8 @@ struct BingoSquare: Identifiable, Hashable {
     var id = UUID()
     var category: String
     var marked: Bool = false
-    var bookTitle: String? // Add this to store the book title if the spot is claimed
+    var bookTitle: String? // Store the book title if the spot is claimed
+    var bookCoverURL: String? // Store the book cover URL if the spot is claimed
 
     init(category: String) {
         self.category = category
@@ -15,13 +16,15 @@ struct BingoSquare: Identifiable, Hashable {
         hasher.combine(category)
         hasher.combine(marked)
         hasher.combine(bookTitle)
+        hasher.combine(bookCoverURL)
     }
 
     static func == (lhs: BingoSquare, rhs: BingoSquare) -> Bool {
         return lhs.id == rhs.id &&
                lhs.category == rhs.category &&
                lhs.marked == rhs.marked &&
-               lhs.bookTitle == rhs.bookTitle
+               lhs.bookTitle == rhs.bookTitle &&
+               lhs.bookCoverURL == rhs.bookCoverURL
     }
 }
 

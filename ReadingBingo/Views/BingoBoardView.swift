@@ -17,13 +17,35 @@ struct BingoBoardView: View {
                                 Rectangle()
                                     .fill(viewModel.currentBoard.markers[row][col] ? Color.green : Color.gray)
                                     .frame(height: 60)
-                                Text(viewModel.currentBoard.markers[row][col] ? viewModel.currentBoard.squares[row][col].bookTitle ?? "" : viewModel.currentBoard.squares[row][col].category)
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                                    .minimumScaleFactor(0.5)
-                                    .lineLimit(2)
-                                    .truncationMode(.middle)
-                                    .padding(4)
+                                
+                                if let bookCoverURL = viewModel.currentBoard.squares[row][col].bookCoverURL, let url = URL(string: bookCoverURL.replacingOccurrences(of: "http://", with: "https://")) {
+                                    AsyncImage(url: url) { phase in
+                                        switch phase {
+                                        case .empty:
+                                            ProgressView()
+                                        case .success(let image):
+                                            image
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 60, height: 60)
+                                        case .failure:
+                                            Image(systemName: "book")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 60, height: 60)
+                                        @unknown default:
+                                            EmptyView()
+                                        }
+                                    }
+                                } else {
+                                    Text(viewModel.currentBoard.markers[row][col] ? viewModel.currentBoard.squares[row][col].bookTitle ?? "" : viewModel.currentBoard.squares[row][col].category)
+                                        .foregroundColor(.white)
+                                        .multilineTextAlignment(.center)
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(2)
+                                        .truncationMode(.middle)
+                                        .padding(4)
+                                }
                             }
                         }
                     }

@@ -82,9 +82,10 @@ class BingoViewModel: ObservableObject {
         }
     }
 
-    func claimSquare(row: Int, col: Int, bookName: String) {
+    func claimSquare(row: Int, col: Int, bookName: String, bookCoverURL: String?) {
         if let index = bingoBoards.firstIndex(where: { $0.id == currentBoard.id }) {
             bingoBoards[index].squares[row][col].bookTitle = bookName
+            bingoBoards[index].squares[row][col].bookCoverURL = bookCoverURL
             bingoBoards[index].markers[row][col] = true
             self.currentBoard = bingoBoards[index]
         }
@@ -94,6 +95,7 @@ class BingoViewModel: ObservableObject {
         if let index = bingoBoards.firstIndex(where: { $0.id == currentBoard.id }) {
             bingoBoards[index].markers[row][col] = false
             bingoBoards[index].squares[row][col].bookTitle = nil
+            bingoBoards[index].squares[row][col].bookCoverURL = nil
             self.currentBoard = bingoBoards[index]
         }
     }

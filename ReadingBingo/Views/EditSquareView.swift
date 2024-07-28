@@ -74,7 +74,7 @@ struct EditSquareView: View {
 
                 HStack {
                     Button("Save") {
-                        viewModel.claimSquare(row: row, col: col, bookName: bookName)
+                        viewModel.claimSquare(row: row, col: col, bookName: bookName, bookCoverURL: bookDetails?.imageLinks?.thumbnail)
                     }
                     .padding()
                     Button("Unclaim") {
