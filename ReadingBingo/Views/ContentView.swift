@@ -10,12 +10,21 @@ struct ContentView: View {
                     .environmentObject(viewModel)
                 Spacer()
             }
-            .navigationTitle("Reading Bingo")
-            .navigationBarItems(leading: NavigationLink(destination: BoardSelectionView().environmentObject(viewModel)) {
-                Image(systemName: "square.grid.2x2.fill")
-                    .imageScale(.large)
-                    .padding()
-            })
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(viewModel.currentBoard.name)
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink(destination: BoardSelectionView().environmentObject(viewModel)) {
+                        Image(systemName: "square.grid.2x2.fill")
+                            .imageScale(.large)
+                            .padding()
+                    }
+                }
+            }
         }
     }
 }
