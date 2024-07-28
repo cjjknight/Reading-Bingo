@@ -1,0 +1,6 @@
+framework module Pods_ReadingBingo {
+  umbrella header "Pods-ReadingBingo-umbrella.h"
+
+  export *
+  module * { export * }
+}
