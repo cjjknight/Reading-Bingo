@@ -5,19 +5,40 @@ struct EditSquareView: View {
     var row: Int
     var col: Int
     @State private var category: String = ""
+    @State private var bookName: String = ""
 
     var body: some View {
         VStack {
-            TextField("Category", text: $category)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            if viewModel.isEditMode {
+                TextField("Category", text: $category)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                Button("Save") {
+                    viewModel.updateSquare(row: row, col: col, category: category)
+                }
                 .padding()
-            Button("Save") {
-                viewModel.updateSquare(row: row, col: col, category: category)
+            } else {
+                TextField("Book Name", text: $bookName)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                HStack {
+                    Button("Save") {
+                        viewModel.claimSquare(row: row, col: col, bookName: bookName)
+                    }
+                    .padding()
+                    Button("Unclaim") {
+                        viewModel.unclaimSquare(row: row, col: col)
+                    }
+                    .padding()
+                }
             }
-            .padding()
         }
         .onAppear {
-            category = viewModel.currentBoard.squares[row][col].category
+            if viewModel.isEditMode {
+                category = viewModel.currentBoard.squares[row][col].category
+            } else {
+                bookName = viewModel.currentBoard.squares[row][col].bookTitle ?? ""
+            }
         }
     }
 }

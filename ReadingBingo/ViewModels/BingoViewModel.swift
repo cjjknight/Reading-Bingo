@@ -4,10 +4,9 @@ class BingoViewModel: ObservableObject {
     @Published var bingoBoards: [BingoBoard]
     @Published var currentBoard: BingoBoard
     @Published var isEditingBoardName = false
-    @Published var isEditMode = false // Add this line to track the current mode
+    @Published var isEditMode = false
 
     init() {
-        // Define default categories for three different boards
         let exampleCategories = [
             "Fantasy", "Science Fiction", "Mystery", "Biography", "Non-fiction",
             "Romance", "Thriller", "Historical", "Young Adult", "Classic",
@@ -32,7 +31,6 @@ class BingoViewModel: ObservableObject {
             "Spy Fiction", "Mythopoeia", "Sword and Sorcery", "Technothriller", "Weird Fiction"
         ]
 
-        // Create the boards using a static method
         let exampleBoard = BingoViewModel.createBoard(name: "Example", categories: exampleCategories)
         let classicBoard = BingoViewModel.createBoard(name: "Classics", categories: classicCategories)
         let genreBoard = BingoViewModel.createBoard(name: "Genres", categories: genreCategories)
@@ -50,7 +48,7 @@ class BingoViewModel: ObservableObject {
             for col in 0..<5 {
                 let category = categories[row * 5 + col]
                 rowSquares.append(BingoSquare(category: category))
-                rowMarkers.append(false) // Initialize markers as false
+                rowMarkers.append(false)
             }
             squares.append(rowSquares)
             markers.append(rowMarkers)
@@ -84,9 +82,18 @@ class BingoViewModel: ObservableObject {
         }
     }
 
-    func toggleMarker(row: Int, col: Int) {
+    func claimSquare(row: Int, col: Int, bookName: String) {
         if let index = bingoBoards.firstIndex(where: { $0.id == currentBoard.id }) {
-            bingoBoards[index].markers[row][col].toggle()
+            bingoBoards[index].squares[row][col].bookTitle = bookName
+            bingoBoards[index].markers[row][col] = true
+            self.currentBoard = bingoBoards[index]
+        }
+    }
+
+    func unclaimSquare(row: Int, col: Int) {
+        if let index = bingoBoards.firstIndex(where: { $0.id == currentBoard.id }) {
+            bingoBoards[index].markers[row][col] = false
+            bingoBoards[index].squares[row][col].bookTitle = nil
             self.currentBoard = bingoBoards[index]
         }
     }
@@ -95,7 +102,7 @@ class BingoViewModel: ObservableObject {
         bingoBoards.remove(atOffsets: indexSet)
         if bingoBoards.isEmpty {
             createNewBoard()
-        } else if currentBoard.id == bingoBoards.first!.id {
+        } else {
             currentBoard = bingoBoards.first!
         }
     }
