@@ -41,6 +41,7 @@
 		8BF9F0C32C56F02500D8F8CD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8273232C56E6B300824B8F /* ContentView.swift */; };
 		8BF9F0C72C56F05200D8F8CD /* BoardSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0C62C56F05200D8F8CD /* BoardSelectionView.swift */; };
 		8BF9F0C92C56F28800D8F8CD /* EditSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0C82C56F28800D8F8CD /* EditSquareView.swift */; };
+		8BF9F0CB2C56F9CE00D8F8CD /* GoogleBooksAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0CA2C56F9CE00D8F8CD /* GoogleBooksAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		8B82736D2C56E9F100824B8F /* BingoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BingoViewModel.swift; sourceTree = "<group>"; };
 		8BF9F0C62C56F05200D8F8CD /* BoardSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSelectionView.swift; sourceTree = "<group>"; };
 		8BF9F0C82C56F28800D8F8CD /* EditSquareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSquareView.swift; sourceTree = "<group>"; };
+		8BF9F0CA2C56F9CE00D8F8CD /* GoogleBooksAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleBooksAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 				8BF9F0C42C56F02900D8F8CD /* ViewModels */,
 				8BF9F0C52C56F02F00D8F8CD /* Models */,
 				8B8273252C56E6B300824B8F /* Item.swift */,
+				8BF9F0CA2C56F9CE00D8F8CD /* GoogleBooksAPI.swift */,
 				8B8273272C56E6B400824B8F /* Assets.xcassets */,
 				8B8273292C56E6B400824B8F /* ReadingBingo.entitlements */,
 				8B82734E2C56E95200824B8F /* GoogleService-Info (1).plist */,
@@ -363,6 +366,7 @@
 				8B8273262C56E6B300824B8F /* Item.swift in Sources */,
 				8B8273222C56E6B300824B8F /* ReadingBingoApp.swift in Sources */,
 				8B82735E2C56E9B400824B8F /* Models.swift in Sources */,
+				8BF9F0CB2C56F9CE00D8F8CD /* GoogleBooksAPI.swift in Sources */,
 				8BF9F0C72C56F05200D8F8CD /* BoardSelectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
