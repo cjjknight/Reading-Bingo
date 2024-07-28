@@ -2,27 +2,20 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var viewModel = BingoViewModel()
-    
+
     var body: some View {
         NavigationView {
             VStack {
-                Picker("Select Board", selection: Binding(
-                    get: { viewModel.currentBoard.id },
-                    set: { viewModel.switchBoard(to: $0) }
-                )) {
-                    ForEach(viewModel.bingoBoards) { board in
-                        Text(board.name).tag(board.id)
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
-
                 BingoBoardView()
                     .environmentObject(viewModel)
-
                 Spacer()
             }
             .navigationTitle("Reading Bingo")
+            .navigationBarItems(leading: NavigationLink(destination: BoardSelectionView().environmentObject(viewModel)) {
+                Image(systemName: "square.grid.2x2.fill")
+                    .imageScale(.large)
+                    .padding()
+            })
         }
     }
 }

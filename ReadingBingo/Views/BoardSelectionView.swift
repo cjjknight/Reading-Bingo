@@ -1,8 +1,18 @@
-//
-//  BoardSelectionView.swift
-//  ReadingBingo
-//
-//  Created by Christopher Johnson on 7/28/24.
-//
+import SwiftUI
 
-import Foundation
+struct BoardSelectionView: View {
+    @EnvironmentObject var viewModel: BingoViewModel
+    @Environment(\.presentationMode) var presentationMode
+
+    var body: some View {
+        List(viewModel.bingoBoards) { board in
+            Button(action: {
+                viewModel.switchBoard(to: board.id)
+                presentationMode.wrappedValue.dismiss()
+            }) {
+                Text(board.name)
+            }
+        }
+        .navigationTitle("Select Board")
+    }
+}

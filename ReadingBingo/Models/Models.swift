@@ -10,6 +10,7 @@ struct BingoBoard: Identifiable, Hashable {
     var id = UUID()
     var name: String
     var squares: [[BingoSquare]]
+    var markers: [[Bool]] // Add this line to store marker states
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

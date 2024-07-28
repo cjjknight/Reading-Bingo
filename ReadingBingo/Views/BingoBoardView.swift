@@ -14,7 +14,7 @@ struct BingoBoardView: View {
                         }) {
                             ZStack {
                                 Rectangle()
-                                    .fill(viewModel.markers[row][col] ? Color.green : Color.gray)
+                                    .fill(viewModel.currentBoard.markers[row][col] ? Color.green : Color.gray)
                                     .frame(height: 60)
                                 Text(viewModel.currentBoard.squares[row][col].category)
                                     .foregroundColor(.white)

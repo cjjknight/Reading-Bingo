@@ -3,7 +3,6 @@ import Foundation
 class BingoViewModel: ObservableObject {
     @Published var bingoBoards: [BingoBoard]
     @Published var currentBoard: BingoBoard
-    @Published var markers: [[Bool]]
 
     init() {
         // Define default categories for three different boards
@@ -38,30 +37,35 @@ class BingoViewModel: ObservableObject {
 
         self.bingoBoards = [exampleBoard, classicBoard, genreBoard]
         self.currentBoard = exampleBoard
-        self.markers = Array(repeating: Array(repeating: false, count: 5), count: 5)
     }
 
     static func createBoard(name: String, categories: [String]) -> BingoBoard {
         var squares = [[BingoSquare]]()
+        var markers = [[Bool]]()
         for row in 0..<5 {
             var rowSquares = [BingoSquare]()
+            var rowMarkers = [Bool]()
             for col in 0..<5 {
                 let category = categories[row * 5 + col]
                 rowSquares.append(BingoSquare(category: category))
+                rowMarkers.append(false) // Initialize markers as false
             }
             squares.append(rowSquares)
+            markers.append(rowMarkers)
         }
-        return BingoBoard(name: name, squares: squares)
+        return BingoBoard(name: name, squares: squares, markers: markers)
     }
 
     func switchBoard(to boardId: UUID) {
         if let board = bingoBoards.first(where: { $0.id == boardId }) {
             self.currentBoard = board
-            self.markers = Array(repeating: Array(repeating: false, count: 5), count: 5)
         }
     }
 
     func toggleMarker(row: Int, col: Int) {
-        markers[row][col].toggle()
+        if let index = bingoBoards.firstIndex(where: { $0.id == currentBoard.id }) {
+            bingoBoards[index].markers[row][col].toggle()
+            self.currentBoard = bingoBoards[index]
+        }
     }
 }

@@ -37,6 +37,9 @@
 		8B82737A2C56EA9000824B8F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8273792C56EA9000824B8F /* FirebaseAuth */; };
 		8B82737C2C56EA9000824B8F /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8B82737B2C56EA9000824B8F /* FirebaseFirestoreSwift */; };
 		8B82737E2C56EA9C00824B8F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8B82737D2C56EA9C00824B8F /* FirebaseAuth */; };
+		8BF9F0C22C56F02500D8F8CD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8273232C56E6B300824B8F /* ContentView.swift */; };
+		8BF9F0C32C56F02500D8F8CD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8273232C56E6B300824B8F /* ContentView.swift */; };
+		8BF9F0C72C56F05200D8F8CD /* BoardSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0C62C56F05200D8F8CD /* BoardSelectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +76,7 @@
 		8B82735D2C56E9B400824B8F /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		8B8273692C56E9E200824B8F /* BingoBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BingoBoardView.swift; sourceTree = "<group>"; };
 		8B82736D2C56E9F100824B8F /* BingoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BingoViewModel.swift; sourceTree = "<group>"; };
+		8BF9F0C62C56F05200D8F8CD /* BoardSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSelectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,10 +138,9 @@
 			isa = PBXGroup;
 			children = (
 				8B8273212C56E6B300824B8F /* ReadingBingoApp.swift */,
-				8B8273232C56E6B300824B8F /* ContentView.swift */,
-				8B8273692C56E9E200824B8F /* BingoBoardView.swift */,
-				8B82736D2C56E9F100824B8F /* BingoViewModel.swift */,
-				8B82735D2C56E9B400824B8F /* Models.swift */,
+				8BF9F0C12C56F02000D8F8CD /* Views */,
+				8BF9F0C42C56F02900D8F8CD /* ViewModels */,
+				8BF9F0C52C56F02F00D8F8CD /* Models */,
 				8B8273252C56E6B300824B8F /* Item.swift */,
 				8B8273272C56E6B400824B8F /* Assets.xcassets */,
 				8B8273292C56E6B400824B8F /* ReadingBingo.entitlements */,
@@ -170,6 +173,32 @@
 				8B8273412C56E6B400824B8F /* ReadingBingoUITestsLaunchTests.swift */,
 			);
 			path = ReadingBingoUITests;
+			sourceTree = "<group>";
+		};
+		8BF9F0C12C56F02000D8F8CD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8B8273232C56E6B300824B8F /* ContentView.swift */,
+				8BF9F0C62C56F05200D8F8CD /* BoardSelectionView.swift */,
+				8B8273692C56E9E200824B8F /* BingoBoardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8BF9F0C42C56F02900D8F8CD /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				8B82736D2C56E9F100824B8F /* BingoViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		8BF9F0C52C56F02F00D8F8CD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8B82735D2C56E9B400824B8F /* Models.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -330,6 +359,7 @@
 				8B8273262C56E6B300824B8F /* Item.swift in Sources */,
 				8B8273222C56E6B300824B8F /* ReadingBingoApp.swift in Sources */,
 				8B82735E2C56E9B400824B8F /* Models.swift in Sources */,
+				8BF9F0C72C56F05200D8F8CD /* BoardSelectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +368,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B82736F2C56E9F100824B8F /* BingoViewModel.swift in Sources */,
+				8BF9F0C22C56F02500D8F8CD /* ContentView.swift in Sources */,
 				8B8273362C56E6B400824B8F /* ReadingBingoTests.swift in Sources */,
 				8B82735F2C56E9B400824B8F /* Models.swift in Sources */,
 				8B82736B2C56E9E200824B8F /* BingoBoardView.swift in Sources */,
@@ -350,6 +381,7 @@
 			files = (
 				8B8273702C56E9F100824B8F /* BingoViewModel.swift in Sources */,
 				8B8273602C56E9B400824B8F /* Models.swift in Sources */,
+				8BF9F0C32C56F02500D8F8CD /* ContentView.swift in Sources */,
 				8B82736C2C56E9E200824B8F /* BingoBoardView.swift in Sources */,
 				8B8273402C56E6B400824B8F /* ReadingBingoUITests.swift in Sources */,
 				8B8273422C56E6B400824B8F /* ReadingBingoUITestsLaunchTests.swift in Sources */,
