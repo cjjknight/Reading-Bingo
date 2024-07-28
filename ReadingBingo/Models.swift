@@ -1,8 +1,11 @@
-//
-//  Models.swift
-//  ReadingBingo
-//
-//  Created by Christopher Johnson on 7/28/24.
-//
-
 import Foundation
+
+struct BingoSquare: Identifiable {
+    var id = UUID()
+    var category: String
+    var marked: Bool = false
+}
+
+struct BingoBoard {
+    var squares: [[BingoSquare]]
+}
