@@ -4,6 +4,9 @@ struct BoardSelectionView: View {
     @EnvironmentObject var viewModel: BingoViewModel
     @Environment(\.presentationMode) var presentationMode
 
+    @State private var showAlert = false
+    @State private var boardToDelete: BingoBoard?
+
     var body: some View {
         List {
             Button(action: {
@@ -25,9 +28,8 @@ struct BoardSelectionView: View {
                 }
                 .swipeActions(edge: .trailing) {
                     Button(role: .destructive) {
-                        if let index = viewModel.bingoBoards.firstIndex(of: board) {
-                            viewModel.deleteBoard(at: IndexSet(integer: index))
-                        }
+                        boardToDelete = board
+                        showAlert = true
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
@@ -41,6 +43,19 @@ struct BoardSelectionView: View {
                     .tint(.blue)
                 }
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Delete Board"),
+                message: Text("Are you sure you want to delete this board?"),
+                primaryButton: .destructive(Text("Delete")) {
+                    if let board = boardToDelete, let index = viewModel.bingoBoards.firstIndex(of: board) {
+                        viewModel.deleteBoard(at: IndexSet(integer: index))
+                    }
+                    boardToDelete = nil
+                },
+                secondaryButton: .cancel()
+            )
         }
         .navigationTitle("Select Board")
     }
