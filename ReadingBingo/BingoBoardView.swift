@@ -16,7 +16,7 @@ struct BingoBoardView: View {
                                 Rectangle()
                                     .fill(viewModel.markers[row][col] ? Color.green : Color.gray)
                                     .frame(height: 60)
-                                Text(viewModel.bingoBoard.squares[row][col].category)
+                                Text(viewModel.currentBoard.squares[row][col].category)
                                     .foregroundColor(.white)
                                     .multilineTextAlignment(.center)
                             }
