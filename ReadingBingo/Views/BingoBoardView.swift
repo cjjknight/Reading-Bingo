@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BingoBoardView: View {
     @EnvironmentObject var viewModel: BingoViewModel
+    @State private var selectedSquare: SquareIdentifier?
     let columns = Array(repeating: GridItem(.flexible()), count: 5)
 
     var body: some View {
@@ -10,7 +11,11 @@ struct BingoBoardView: View {
                 ForEach(0..<5) { row in
                     ForEach(0..<5) { col in
                         Button(action: {
-                            viewModel.toggleMarker(row: row, col: col)
+                            if viewModel.isEditMode {
+                                selectedSquare = SquareIdentifier(row: row, col: col)
+                            } else {
+                                viewModel.toggleMarker(row: row, col: col)
+                            }
                         }) {
                             ZStack {
                                 Rectangle()
@@ -26,5 +31,9 @@ struct BingoBoardView: View {
             }
         }
         .padding()
+        .sheet(item: $selectedSquare) { square in
+            EditSquareView(row: square.row, col: square.col)
+                .environmentObject(viewModel)
+        }
     }
 }

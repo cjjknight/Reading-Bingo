@@ -5,12 +5,40 @@ struct BoardSelectionView: View {
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        List(viewModel.bingoBoards) { board in
+        List {
             Button(action: {
-                viewModel.switchBoard(to: board.id)
+                viewModel.createNewBoard()
                 presentationMode.wrappedValue.dismiss()
             }) {
-                Text(board.name)
+                Text("Create New Board")
+            }
+            
+            ForEach(viewModel.bingoBoards) { board in
+                HStack {
+                    Button(action: {
+                        viewModel.switchBoard(to: board.id)
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text(board.name)
+                    }
+                    Spacer()
+                    Button(action: {
+                        viewModel.switchBoard(to: board.id)
+                        viewModel.isEditMode = true
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "pencil")
+                    }
+                }
+                .swipeActions {
+                    Button(role: .destructive) {
+                        if let index = viewModel.bingoBoards.firstIndex(of: board) {
+                            viewModel.deleteBoard(at: IndexSet(integer: index))
+                        }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
             }
         }
         .navigationTitle("Select Board")

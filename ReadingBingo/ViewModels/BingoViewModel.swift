@@ -3,6 +3,8 @@ import Foundation
 class BingoViewModel: ObservableObject {
     @Published var bingoBoards: [BingoBoard]
     @Published var currentBoard: BingoBoard
+    @Published var isEditingBoardName = false
+    @Published var isEditMode = false // Add this line to track the current mode
 
     init() {
         // Define default categories for three different boards
@@ -56,9 +58,29 @@ class BingoViewModel: ObservableObject {
         return BingoBoard(name: name, squares: squares, markers: markers)
     }
 
+    func createNewBoard() {
+        let newBoard = BingoBoard(name: "New Board", squares: Array(repeating: Array(repeating: BingoSquare(category: ""), count: 5), count: 5), markers: Array(repeating: Array(repeating: false, count: 5), count: 5))
+        bingoBoards.append(newBoard)
+        switchBoard(to: newBoard.id)
+    }
+
     func switchBoard(to boardId: UUID) {
         if let board = bingoBoards.first(where: { $0.id == boardId }) {
             self.currentBoard = board
+        }
+    }
+
+    func updateSquare(row: Int, col: Int, category: String) {
+        if let index = bingoBoards.firstIndex(where: { $0.id == currentBoard.id }) {
+            bingoBoards[index].squares[row][col].category = category
+            self.currentBoard = bingoBoards[index]
+        }
+    }
+
+    func renameCurrentBoard(newName: String) {
+        if let index = bingoBoards.firstIndex(where: { $0.id == currentBoard.id }) {
+            bingoBoards[index].name = newName
+            self.currentBoard = bingoBoards[index]
         }
     }
 
@@ -66,6 +88,15 @@ class BingoViewModel: ObservableObject {
         if let index = bingoBoards.firstIndex(where: { $0.id == currentBoard.id }) {
             bingoBoards[index].markers[row][col].toggle()
             self.currentBoard = bingoBoards[index]
+        }
+    }
+
+    func deleteBoard(at indexSet: IndexSet) {
+        bingoBoards.remove(atOffsets: indexSet)
+        if bingoBoards.isEmpty {
+            createNewBoard()
+        } else if currentBoard.id == bingoBoards.first!.id {
+            currentBoard = bingoBoards.first!
         }
     }
 }

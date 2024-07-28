@@ -1,8 +1,23 @@
-//
-//  EditSquareView.swift
-//  ReadingBingo
-//
-//  Created by Christopher Johnson on 7/28/24.
-//
+import SwiftUI
 
-import Foundation
+struct EditSquareView: View {
+    @EnvironmentObject var viewModel: BingoViewModel
+    var row: Int
+    var col: Int
+    @State private var category: String = ""
+
+    var body: some View {
+        VStack {
+            TextField("Category", text: $category)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            Button("Save") {
+                viewModel.updateSquare(row: row, col: col, category: category)
+            }
+            .padding()
+        }
+        .onAppear {
+            category = viewModel.currentBoard.squares[row][col].category
+        }
+    }
+}
