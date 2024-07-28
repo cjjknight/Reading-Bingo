@@ -24,6 +24,10 @@ struct BingoBoardView: View {
                                 Text(viewModel.currentBoard.squares[row][col].category)
                                     .foregroundColor(.white)
                                     .multilineTextAlignment(.center)
+                                    .lineLimit(2) // Limit the text to two lines
+                                    .minimumScaleFactor(0.5) // Adjust text to fit within the square
+                                    .truncationMode(.middle) // Avoid splitting words with hyphens
+                                    .padding(4) // Add some padding for better readability
                             }
                         }
                     }
