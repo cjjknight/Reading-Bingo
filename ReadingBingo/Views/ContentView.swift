@@ -7,19 +7,10 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
-                if viewModel.isEditMode {
-                    TextField("Board Name", text: Binding(
-                        get: { viewModel.currentBoard.name },
-                        set: { viewModel.renameCurrentBoard(newName: $0) }
-                    ))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                Text(viewModel.currentBoard.name)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .center)
                     .padding()
-                } else {
-                    Text(viewModel.currentBoard.name)
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding()
-                }
 
                 BingoBoardView()
                     .environmentObject(viewModel)
