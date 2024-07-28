@@ -31,7 +31,7 @@ class BingoViewModel: ObservableObject {
             "Spy Fiction", "Mythopoeia", "Sword and Sorcery", "Technothriller", "Weird Fiction"
         ]
 
-        let exampleBoard = BingoViewModel.createBoard(name: "Example", categories: exampleCategories)
+        let exampleBoard = BingoViewModel.createBoard(name: "Basic Book Bingo", categories: exampleCategories)
         let classicBoard = BingoViewModel.createBoard(name: "Classics", categories: classicCategories)
         let genreBoard = BingoViewModel.createBoard(name: "Genres", categories: genreCategories)
 

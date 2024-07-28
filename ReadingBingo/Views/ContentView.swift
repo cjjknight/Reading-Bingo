@@ -8,8 +8,15 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 Text(viewModel.currentBoard.name)
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .shadow(radius: 10)
+                    )
                     .padding()
 
                 BingoBoardView()
@@ -17,6 +24,7 @@ struct ContentView: View {
 
                 Spacer()
             }
+            .background(Color.gray.opacity(0.1))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
