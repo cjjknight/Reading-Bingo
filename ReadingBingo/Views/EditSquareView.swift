@@ -45,10 +45,26 @@ struct EditSquareView: View {
                                 .font(.body)
                                 .padding()
                         }
-                        if let thumbnail = bookDetails.imageLinks?.thumbnail, let url = URL(string: thumbnail) {
-                            AsyncImage(url: url)
-                                .frame(width: 100, height: 150)
-                                .padding()
+                        if let thumbnail = bookDetails.imageLinks?.thumbnail, let url = URL(string: thumbnail.replacingOccurrences(of: "http://", with: "https://")) {
+                            AsyncImage(url: url) { phase in
+                                switch phase {
+                                case .empty:
+                                    ProgressView()
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 100, height: 150)
+                                case .failure:
+                                    Image(systemName: "book")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 100, height: 150)
+                                @unknown default:
+                                    EmptyView()
+                                }
+                            }
+                            .padding()
                         }
                     }
                 } else if let errorMessage = errorMessage {
