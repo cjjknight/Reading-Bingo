@@ -7,7 +7,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
-                if isEditingName {
+                if viewModel.isEditMode {
                     TextField("Board Name", text: Binding(
                         get: { viewModel.currentBoard.name },
                         set: { viewModel.renameCurrentBoard(newName: $0) }
@@ -17,9 +17,6 @@ struct ContentView: View {
                 } else {
                     Text(viewModel.currentBoard.name)
                         .font(.headline)
-                        .onTapGesture {
-                            isEditingName = true
-                        }
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding()
                 }
