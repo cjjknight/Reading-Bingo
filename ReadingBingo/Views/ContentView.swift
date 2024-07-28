@@ -25,12 +25,6 @@ struct ContentView: View {
                     .environmentObject(viewModel)
 
                 Spacer()
-
-                Toggle(isOn: $viewModel.isEditMode) {
-                    Text(viewModel.isEditMode ? "Edit Mode" : "Play Mode")
-                        .font(.headline)
-                }
-                .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -43,5 +37,11 @@ struct ContentView: View {
                 }
             }
         }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
 }

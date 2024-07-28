@@ -59,12 +59,13 @@ class BingoViewModel: ObservableObject {
     func createNewBoard() {
         let newBoard = BingoBoard(name: "New Board", squares: Array(repeating: Array(repeating: BingoSquare(category: ""), count: 5), count: 5), markers: Array(repeating: Array(repeating: false, count: 5), count: 5))
         bingoBoards.append(newBoard)
-        switchBoard(to: newBoard.id)
+        switchBoard(to: newBoard.id, editMode: true) // Default to edit mode
     }
 
-    func switchBoard(to boardId: UUID) {
+    func switchBoard(to boardId: UUID, editMode: Bool = false) {
         if let board = bingoBoards.first(where: { $0.id == boardId }) {
             self.currentBoard = board
+            self.isEditMode = editMode
         }
     }
 
@@ -106,6 +107,7 @@ class BingoViewModel: ObservableObject {
             createNewBoard()
         } else {
             currentBoard = bingoBoards.first!
+            self.isEditMode = false // Default to play mode
         }
     }
 }

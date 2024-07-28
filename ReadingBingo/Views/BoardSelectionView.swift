@@ -16,21 +16,14 @@ struct BoardSelectionView: View {
             ForEach(viewModel.bingoBoards) { board in
                 HStack {
                     Button(action: {
-                        viewModel.switchBoard(to: board.id)
+                        viewModel.switchBoard(to: board.id, editMode: false) // Default to play mode
                         presentationMode.wrappedValue.dismiss()
                     }) {
                         Text(board.name)
                     }
                     Spacer()
-                    Button(action: {
-                        viewModel.switchBoard(to: board.id)
-                        viewModel.isEditMode = true
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Image(systemName: "pencil")
-                    }
                 }
-                .swipeActions {
+                .swipeActions(edge: .trailing) {
                     Button(role: .destructive) {
                         if let index = viewModel.bingoBoards.firstIndex(of: board) {
                             viewModel.deleteBoard(at: IndexSet(integer: index))
@@ -38,6 +31,14 @@ struct BoardSelectionView: View {
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
+
+                    Button {
+                        viewModel.switchBoard(to: board.id, editMode: true) // Switch to edit mode
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                    }
+                    .tint(.blue)
                 }
             }
         }
