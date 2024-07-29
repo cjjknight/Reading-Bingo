@@ -1,19 +1,25 @@
 import Foundation
 
 class BingoViewModel: ObservableObject {
-    @Published var bingoBoards: [BingoBoard]
-    @Published var currentBoard: BingoBoard
+    @Published var bingoBoards: [BingoBoard] {
+        didSet {
+            saveBoards()
+        }
+    }
+    @Published var currentBoard: BingoBoard {
+        didSet {
+            saveCurrentBoard()
+        }
+    }
     @Published var isEditingBoardName = false
     @Published var isEditMode = false
     @Published var currentUserName: String = "User"
 
     init() {
-        // Load boards from persistent storage
         if let loadedBoards = Self.loadBoards(), let loadedCurrentBoard = Self.loadCurrentBoard() {
             self.bingoBoards = loadedBoards
             self.currentBoard = loadedCurrentBoard
         } else {
-            // Example board setup with owner and players
             let exampleCategories = [
                 "Fantasy", "Science Fiction", "Mystery", "Biography", "Non-fiction",
                 "Romance", "Thriller", "Historical", "Young Adult", "Classic",
@@ -21,10 +27,11 @@ class BingoViewModel: ObservableObject {
                 "Poetry", "Drama", "Short Story", "Children's", "Dystopian",
                 "Crime", "Memoir", "Paranormal", "Travel", "Cookbook"
             ]
-
             let exampleBoard = BingoViewModel.createBoard(name: "Example", categories: exampleCategories, owner: "Owner1", players: ["User1", "User2"])
             self.bingoBoards = [exampleBoard]
             self.currentBoard = exampleBoard
+            saveBoards()
+            saveCurrentBoard()
         }
     }
 
@@ -119,6 +126,13 @@ class BingoViewModel: ObservableObject {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(bingoBoards) {
             UserDefaults.standard.set(encoded, forKey: "bingoBoards")
+        }
+    }
+
+    func saveCurrentBoard() {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(currentBoard) {
+            UserDefaults.standard.set(encoded, forKey: "currentBoard")
         }
     }
 
