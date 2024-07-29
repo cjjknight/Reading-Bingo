@@ -44,6 +44,9 @@
 		8BF9F0CB2C56F9CE00D8F8CD /* GoogleBooksAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0CA2C56F9CE00D8F8CD /* GoogleBooksAPI.swift */; };
 		8BF9F0E02C57169B00D8F8CD /* EditBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0DF2C57169B00D8F8CD /* EditBoardView.swift */; };
 		8BF9F0E22C57187200D8F8CD /* ClaimSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0E12C57187200D8F8CD /* ClaimSquareView.swift */; };
+		8BF9F0E42C57297B00D8F8CD /* UserSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0E32C57297B00D8F8CD /* UserSelectionView.swift */; };
+		8BF9F0E62C5729C700D8F8CD /* AddUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0E52C5729C700D8F8CD /* AddUserView.swift */; };
+		8BF9F0E82C572A1B00D8F8CD /* AddPlayerPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9F0E72C572A1B00D8F8CD /* AddPlayerPrompt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,9 @@
 		8BF9F0CA2C56F9CE00D8F8CD /* GoogleBooksAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleBooksAPI.swift; sourceTree = "<group>"; };
 		8BF9F0DF2C57169B00D8F8CD /* EditBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBoardView.swift; sourceTree = "<group>"; };
 		8BF9F0E12C57187200D8F8CD /* ClaimSquareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimSquareView.swift; sourceTree = "<group>"; };
+		8BF9F0E32C57297B00D8F8CD /* UserSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSelectionView.swift; sourceTree = "<group>"; };
+		8BF9F0E52C5729C700D8F8CD /* AddUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserView.swift; sourceTree = "<group>"; };
+		8BF9F0E72C572A1B00D8F8CD /* AddPlayerPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerPrompt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +196,9 @@
 				8B8273232C56E6B300824B8F /* ContentView.swift */,
 				8BF9F0C62C56F05200D8F8CD /* BoardSelectionView.swift */,
 				8B8273692C56E9E200824B8F /* BingoBoardView.swift */,
+				8BF9F0E32C57297B00D8F8CD /* UserSelectionView.swift */,
+				8BF9F0E72C572A1B00D8F8CD /* AddPlayerPrompt.swift */,
+				8BF9F0E52C5729C700D8F8CD /* AddUserView.swift */,
 				8BF9F0DF2C57169B00D8F8CD /* EditBoardView.swift */,
 				8BF9F0E12C57187200D8F8CD /* ClaimSquareView.swift */,
 				8BF9F0C82C56F28800D8F8CD /* EditSquareView.swift */,
@@ -367,6 +376,9 @@
 			files = (
 				8B8273242C56E6B300824B8F /* ContentView.swift in Sources */,
 				8BF9F0C92C56F28800D8F8CD /* EditSquareView.swift in Sources */,
+				8BF9F0E82C572A1B00D8F8CD /* AddPlayerPrompt.swift in Sources */,
+				8BF9F0E42C57297B00D8F8CD /* UserSelectionView.swift in Sources */,
+				8BF9F0E62C5729C700D8F8CD /* AddUserView.swift in Sources */,
 				8BF9F0E22C57187200D8F8CD /* ClaimSquareView.swift in Sources */,
 				8B82736A2C56E9E200824B8F /* BingoBoardView.swift in Sources */,
 				8BF9F0E02C57169B00D8F8CD /* EditBoardView.swift in Sources */,

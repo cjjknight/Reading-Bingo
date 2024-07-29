@@ -5,7 +5,6 @@ struct ContentView: View {
     @State private var isEditingName = false
     @State private var showAddPlayerPrompt = false
     @State private var selectedSquare: SquareIdentifier?
-    @State private var selectedUserIndex = 0
 
     var body: some View {
         NavigationView {
@@ -111,20 +110,11 @@ struct ContentView: View {
                                 .imageScale(.large)
                                 .padding()
                         }
-                        Picker("User", selection: $selectedUserIndex) {
-                            Text("Create new user").tag(0)
-                            ForEach(1..<viewModel.users.count + 1, id: \.self) { index in
-                                Text(viewModel.users[index - 1]).tag(index)
-                            }
+                        NavigationLink(destination: UserSelectionView(viewModel: viewModel)) {
+                            Image(systemName: "person.circle")
+                                .imageScale(.large)
+                                .padding()
                         }
-                        .onChange(of: selectedUserIndex) { index in
-                            if index == 0 {
-                                viewModel.currentUserName = "User"
-                            } else {
-                                viewModel.currentUserName = viewModel.users[index - 1]
-                            }
-                        }
-                        .pickerStyle(MenuPickerStyle())
                     }
                 }
             }
@@ -181,35 +171,5 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-    }
-}
-
-struct AddPlayerPrompt: View {
-    @State private var selectedUserIndex = 0
-    @Environment(\.presentationMode) var presentationMode
-    var viewModel: BingoViewModel
-
-    var body: some View {
-        VStack {
-            Text("Add a new player:")
-                .font(.headline)
-                .padding()
-
-            Picker("Player", selection: $selectedUserIndex) {
-                ForEach(0..<viewModel.users.count, id: \.self) { index in
-                    Text(viewModel.users[index]).tag(index)
-                }
-            }
-            .pickerStyle(MenuPickerStyle())
-
-            Button("Add Player") {
-                if selectedUserIndex < viewModel.users.count {
-                    viewModel.addPlayerToCurrentBoard(playerName: viewModel.users[selectedUserIndex])
-                }
-                presentationMode.wrappedValue.dismiss()
-            }
-            .padding()
-        }
-        .padding()
     }
 }

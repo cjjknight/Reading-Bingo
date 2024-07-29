@@ -141,6 +141,12 @@ class BingoViewModel: ObservableObject {
         }
     }
 
+    func addUser(userName: String) {
+        if !users.contains(userName) {
+            users.append(userName)
+        }
+    }
+
     func saveBoards() {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(bingoBoards) {
