@@ -33,14 +33,17 @@ struct BingoBoard: Identifiable, Hashable, Codable {
     var name: String
     var squares: [[BingoSquare]]
     var markers: [[Bool]]
+    var owner: String
+    var players: [String]
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(name)
+        hasher.combine(owner)
     }
 
     static func == (lhs: BingoBoard, rhs: BingoBoard) -> Bool {
-        return lhs.id == rhs.id && lhs.name == rhs.name
+        return lhs.id == rhs.id && lhs.name == rhs.name && lhs.owner == rhs.owner
     }
 }
 

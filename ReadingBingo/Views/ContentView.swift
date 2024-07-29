@@ -5,6 +5,7 @@ struct ContentView: View {
     @State private var isEditingName = false
     @State private var showUserNamePrompt = false
     @State private var userName = "User"
+    @State private var selectedSquare: SquareIdentifier?
 
     var body: some View {
         NavigationView {
@@ -90,12 +91,14 @@ struct ContentView: View {
                                 .imageScale(.large)
                                 .padding()
                         }
-                        Button(action: {
-                            viewModel.isEditMode.toggle()
-                        }) {
-                            Image(systemName: "pencil")
-                                .imageScale(.large)
-                                .padding()
+                        if viewModel.currentBoard.owner == viewModel.currentUserName {
+                            Button(action: {
+                                viewModel.isEditMode.toggle()
+                            }) {
+                                Image(systemName: "pencil")
+                                    .imageScale(.large)
+                                    .padding()
+                            }
                         }
                     }
                 }
@@ -110,7 +113,7 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showUserNamePrompt) {
-                UserNamePrompt(userName: $userName)
+                UserNamePrompt(userName: $userName, viewModel: viewModel)
             }
         }
     }
@@ -168,6 +171,7 @@ struct ContentView_Previews: PreviewProvider {
 struct UserNamePrompt: View {
     @Binding var userName: String
     @Environment(\.presentationMode) var presentationMode
+    var viewModel: BingoViewModel
 
     var body: some View {
         VStack {
@@ -180,6 +184,7 @@ struct UserNamePrompt: View {
                 .padding()
 
             Button("Save") {
+                viewModel.currentUserName = userName
                 presentationMode.wrappedValue.dismiss()
             }
             .padding()

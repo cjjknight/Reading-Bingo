@@ -1,47 +1,34 @@
 import Foundation
 
 class BingoViewModel: ObservableObject {
-    @Published var bingoBoards: [BingoBoard] {
-        didSet {
-            saveBoards()
-        }
-    }
-    @Published var currentBoard: BingoBoard {
-        didSet {
-            saveCurrentBoard()
-        }
-    }
+    @Published var bingoBoards: [BingoBoard]
+    @Published var currentBoard: BingoBoard
     @Published var isEditingBoardName = false
     @Published var isEditMode = false
+    @Published var currentUserName: String = "User"
 
     init() {
-        // Initialize the properties first
-        self.bingoBoards = []
-        self.currentBoard = BingoViewModel.createDefaultBoard()
-
-        // Load the boards and current board from UserDefaults
+        // Load boards from persistent storage
         if let loadedBoards = Self.loadBoards(), let loadedCurrentBoard = Self.loadCurrentBoard() {
             self.bingoBoards = loadedBoards
             self.currentBoard = loadedCurrentBoard
         } else {
-            self.bingoBoards = [Self.createDefaultBoard()]
-            self.currentBoard = self.bingoBoards.first!
+            // Example board setup with owner and players
+            let exampleCategories = [
+                "Fantasy", "Science Fiction", "Mystery", "Biography", "Non-fiction",
+                "Romance", "Thriller", "Historical", "Young Adult", "Classic",
+                "Graphic Novel", "Horror", "Adventure", "Humor", "Self-help",
+                "Poetry", "Drama", "Short Story", "Children's", "Dystopian",
+                "Crime", "Memoir", "Paranormal", "Travel", "Cookbook"
+            ]
+
+            let exampleBoard = BingoViewModel.createBoard(name: "Example", categories: exampleCategories, owner: "Owner1", players: ["User1", "User2"])
+            self.bingoBoards = [exampleBoard]
+            self.currentBoard = exampleBoard
         }
     }
 
-    static func createDefaultBoard() -> BingoBoard {
-        let exampleCategories = [
-            "Fantasy", "Science Fiction", "Mystery", "Biography", "Non-fiction",
-            "Romance", "Thriller", "Historical", "Young Adult", "Classic",
-            "Graphic Novel", "Horror", "Adventure", "Humor", "Self-help",
-            "Poetry", "Drama", "Short Story", "Children's", "Dystopian",
-            "Crime", "Memoir", "Paranormal", "Travel", "Cookbook"
-        ]
-
-        return createBoard(name: "Example", categories: exampleCategories)
-    }
-
-    static func createBoard(name: String, categories: [String]) -> BingoBoard {
+    static func createBoard(name: String, categories: [String], owner: String, players: [String]) -> BingoBoard {
         var squares = [[BingoSquare]]()
         var markers = [[Bool]]()
         for row in 0..<5 {
@@ -55,11 +42,17 @@ class BingoViewModel: ObservableObject {
             squares.append(rowSquares)
             markers.append(rowMarkers)
         }
-        return BingoBoard(name: name, squares: squares, markers: markers)
+        return BingoBoard(name: name, squares: squares, markers: markers, owner: owner, players: players)
     }
 
     func createNewBoard() {
-        let newBoard = BingoBoard(name: "New Board", squares: Array(repeating: Array(repeating: BingoSquare(category: ""), count: 5), count: 5), markers: Array(repeating: Array(repeating: false, count: 5), count: 5))
+        let newBoard = BingoBoard(
+            name: "New Board",
+            squares: Array(repeating: Array(repeating: BingoSquare(category: ""), count: 5), count: 5),
+            markers: Array(repeating: Array(repeating: false, count: 5), count: 5),
+            owner: currentUserName,
+            players: [currentUserName]
+        )
         bingoBoards.append(newBoard)
         switchBoard(to: newBoard.id, editMode: true) // Default to edit mode
     }
@@ -67,7 +60,7 @@ class BingoViewModel: ObservableObject {
     func switchBoard(to boardId: UUID, editMode: Bool = false) {
         if let board = bingoBoards.first(where: { $0.id == boardId }) {
             self.currentBoard = board
-            self.isEditMode = editMode
+            self.isEditMode = editMode && board.owner == currentUserName
         }
     }
 
@@ -113,17 +106,10 @@ class BingoViewModel: ObservableObject {
         }
     }
 
-    private func saveBoards() {
+    func saveBoards() {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(bingoBoards) {
             UserDefaults.standard.set(encoded, forKey: "bingoBoards")
-        }
-    }
-
-    private func saveCurrentBoard() {
-        let encoder = JSONEncoder()
-        if let encoded = try? encoder.encode(currentBoard) {
-            UserDefaults.standard.set(encoded, forKey: "currentBoard")
         }
     }
 
