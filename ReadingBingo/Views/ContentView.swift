@@ -3,10 +3,9 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var viewModel = BingoViewModel()
     @State private var isEditingName = false
-    @State private var showUserNamePrompt = false
     @State private var showAddPlayerPrompt = false
-    @State private var userName = "User"
     @State private var selectedSquare: SquareIdentifier?
+    @State private var selectedUserIndex = 0
 
     var body: some View {
         NavigationView {
@@ -112,18 +111,22 @@ struct ContentView: View {
                                 .imageScale(.large)
                                 .padding()
                         }
-                        Button(action: {
-                            showUserNamePrompt.toggle()
-                        }) {
-                            Image(systemName: "person.circle")
-                                .imageScale(.large)
-                                .padding()
+                        Picker("User", selection: $selectedUserIndex) {
+                            Text("Create new user").tag(0)
+                            ForEach(1..<viewModel.users.count + 1, id: \.self) { index in
+                                Text(viewModel.users[index - 1]).tag(index)
+                            }
                         }
+                        .onChange(of: selectedUserIndex) { index in
+                            if index == 0 {
+                                viewModel.currentUserName = "User"
+                            } else {
+                                viewModel.currentUserName = viewModel.users[index - 1]
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
                     }
                 }
-            }
-            .sheet(isPresented: $showUserNamePrompt) {
-                UserNamePrompt(userName: $userName, viewModel: viewModel)
             }
             .sheet(isPresented: $showAddPlayerPrompt) {
                 AddPlayerPrompt(viewModel: viewModel)
@@ -160,17 +163,17 @@ struct ContentView: View {
     private func getProgressMessage(for progress: Double) -> String {
         switch progress {
         case 0.0:
-            return "\(userName), you haven't started yet."
+            return "\(viewModel.currentUserName), you haven't started yet."
         case 0.2:
-            return "\(userName), you're 20% there. Keep going!"
+            return "\(viewModel.currentUserName), you're 20% there. Keep going!"
         case 0.4:
-            return "\(userName), you're 40% there. Keep up the good work!"
+            return "\(viewModel.currentUserName), you're 40% there. Keep up the good work!"
         case 0.6:
-            return "\(userName), you're 60% there. Almost there!"
+            return "\(viewModel.currentUserName), you're 60% there. Almost there!"
         case 0.8:
-            return "\(userName), you're 80% there. Just a bit more!"
+            return "\(viewModel.currentUserName), you're 80% there. Just a bit more!"
         default:
-            return "\(userName), you're getting closer!"
+            return "\(viewModel.currentUserName), you're getting closer!"
         }
     }
 }
@@ -181,33 +184,8 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct UserNamePrompt: View {
-    @Binding var userName: String
-    @Environment(\.presentationMode) var presentationMode
-    var viewModel: BingoViewModel
-
-    var body: some View {
-        VStack {
-            Text("Enter your name:")
-                .font(.headline)
-                .padding()
-
-            TextField("Name", text: $userName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-
-            Button("Save") {
-                viewModel.currentUserName = userName
-                presentationMode.wrappedValue.dismiss()
-            }
-            .padding()
-        }
-        .padding()
-    }
-}
-
 struct AddPlayerPrompt: View {
-    @State private var newPlayerName = ""
+    @State private var selectedUserIndex = 0
     @Environment(\.presentationMode) var presentationMode
     var viewModel: BingoViewModel
 
@@ -217,13 +195,16 @@ struct AddPlayerPrompt: View {
                 .font(.headline)
                 .padding()
 
-            TextField("Player Name", text: $newPlayerName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+            Picker("Player", selection: $selectedUserIndex) {
+                ForEach(0..<viewModel.users.count, id: \.self) { index in
+                    Text(viewModel.users[index]).tag(index)
+                }
+            }
+            .pickerStyle(MenuPickerStyle())
 
             Button("Add Player") {
-                if !newPlayerName.isEmpty {
-                    viewModel.addPlayerToCurrentBoard(playerName: newPlayerName)
+                if selectedUserIndex < viewModel.users.count {
+                    viewModel.addPlayerToCurrentBoard(playerName: viewModel.users[selectedUserIndex])
                 }
                 presentationMode.wrappedValue.dismiss()
             }

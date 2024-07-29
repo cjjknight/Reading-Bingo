@@ -13,12 +13,22 @@ class BingoViewModel: ObservableObject {
     }
     @Published var isEditingBoardName = false
     @Published var isEditMode = false
-    @Published var currentUserName: String = "User"
+    @Published var currentUserName: String = "User" {
+        didSet {
+            switchToUniversalBoard()
+        }
+    }
+    @Published var users: [String] {
+        didSet {
+            saveUsers()
+        }
+    }
 
     init() {
-        if let loadedBoards = Self.loadBoards(), let loadedCurrentBoard = Self.loadCurrentBoard() {
+        if let loadedBoards = Self.loadBoards(), let loadedCurrentBoard = Self.loadCurrentBoard(), let loadedUsers = Self.loadUsers() {
             self.bingoBoards = loadedBoards
             self.currentBoard = loadedCurrentBoard
+            self.users = loadedUsers
         } else {
             let exampleCategories = [
                 "Fantasy", "Science Fiction", "Mystery", "Biography", "Non-fiction",
@@ -27,11 +37,13 @@ class BingoViewModel: ObservableObject {
                 "Poetry", "Drama", "Short Story", "Children's", "Dystopian",
                 "Crime", "Memoir", "Paranormal", "Travel", "Cookbook"
             ]
-            let exampleBoard = BingoViewModel.createBoard(name: "Example", categories: exampleCategories, owner: "Owner1", players: ["User1", "User2"])
-            self.bingoBoards = [exampleBoard]
-            self.currentBoard = exampleBoard
+            let universalBoard = BingoViewModel.createBoard(name: "Universal", categories: exampleCategories, owner: "Admin", players: ["Admin"])
+            self.bingoBoards = [universalBoard]
+            self.currentBoard = universalBoard
+            self.users = ["Admin"]
             saveBoards()
             saveCurrentBoard()
+            saveUsers()
         }
     }
 
@@ -122,6 +134,13 @@ class BingoViewModel: ObservableObject {
         }
     }
 
+    func switchToUniversalBoard() {
+        if let universalBoard = bingoBoards.first(where: { $0.name == "Universal" }) {
+            self.currentBoard = universalBoard
+            self.isEditMode = false
+        }
+    }
+
     func saveBoards() {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(bingoBoards) {
@@ -133,6 +152,13 @@ class BingoViewModel: ObservableObject {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(currentBoard) {
             UserDefaults.standard.set(encoded, forKey: "currentBoard")
+        }
+    }
+
+    func saveUsers() {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(users) {
+            UserDefaults.standard.set(encoded, forKey: "users")
         }
     }
 
@@ -150,6 +176,16 @@ class BingoViewModel: ObservableObject {
         if let savedData = UserDefaults.standard.data(forKey: "currentBoard") {
             let decoder = JSONDecoder()
             if let decoded = try? decoder.decode(BingoBoard.self, from: savedData) {
+                return decoded
+            }
+        }
+        return nil
+    }
+
+    private static func loadUsers() -> [String]? {
+        if let savedData = UserDefaults.standard.data(forKey: "users") {
+            let decoder = JSONDecoder()
+            if let decoded = try? decoder.decode([String].self, from: savedData) {
                 return decoded
             }
         }
