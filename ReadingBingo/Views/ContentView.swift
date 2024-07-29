@@ -91,7 +91,7 @@ struct ContentView: View {
                                 .imageScale(.large)
                                 .padding()
                         }
-                        if viewModel.currentBoard.owner == viewModel.currentUserName {
+                        if viewModel.currentBoard.owner == viewModel.currentUserName || viewModel.currentUserName == "Admin" {
                             Button(action: {
                                 viewModel.isEditMode.toggle()
                             }) {

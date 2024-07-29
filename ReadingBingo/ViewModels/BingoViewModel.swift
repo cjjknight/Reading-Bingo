@@ -60,7 +60,7 @@ class BingoViewModel: ObservableObject {
     func switchBoard(to boardId: UUID, editMode: Bool = false) {
         if let board = bingoBoards.first(where: { $0.id == boardId }) {
             self.currentBoard = board
-            self.isEditMode = editMode && board.owner == currentUserName
+            self.isEditMode = editMode && (board.owner == currentUserName || currentUserName == "Admin")
         }
     }
 

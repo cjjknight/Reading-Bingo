@@ -13,7 +13,7 @@ struct BoardSelectionView: View {
                 Text("Create New Board")
             }
             
-            ForEach(viewModel.bingoBoards.filter { $0.owner == viewModel.currentUserName || $0.players.contains(viewModel.currentUserName) }) { board in
+            ForEach(viewModel.bingoBoards.filter { $0.owner == viewModel.currentUserName || $0.players.contains(viewModel.currentUserName) || viewModel.currentUserName == "Admin" }) { board in
                 HStack {
                     Button(action: {
                         viewModel.switchBoard(to: board.id)
@@ -22,7 +22,7 @@ struct BoardSelectionView: View {
                         Text(board.name)
                     }
                     Spacer()
-                    if board.owner == viewModel.currentUserName {
+                    if board.owner == viewModel.currentUserName || viewModel.currentUserName == "Admin" {
                         Button(action: {
                             viewModel.switchBoard(to: board.id, editMode: true)
                             presentationMode.wrappedValue.dismiss()
@@ -32,7 +32,7 @@ struct BoardSelectionView: View {
                     }
                 }
                 .swipeActions {
-                    if board.owner == viewModel.currentUserName {
+                    if board.owner == viewModel.currentUserName || viewModel.currentUserName == "Admin" {
                         Button(role: .destructive) {
                             if let index = viewModel.bingoBoards.firstIndex(of: board) {
                                 viewModel.deleteBoard(at: IndexSet(integer: index))
