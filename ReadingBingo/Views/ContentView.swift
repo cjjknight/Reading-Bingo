@@ -48,9 +48,24 @@ struct ContentView: View {
                             .font(.headline)
                             .padding()
                     } else {
-                        ProgressView(value: calculateProgress())
-                            .progressViewStyle(LinearProgressViewStyle(tint: .blue))
-                            .padding()
+                        let progress = calculateProgress()
+                        if progress == 1.0 {
+                            Text("BINGO!")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.black)
+                                .padding()
+                                .background(Color.yellow)
+                                .cornerRadius(10)
+                                .shadow(radius: 5)
+                        } else {
+                            Text("Closest line: \(Int(progress * 100))% complete")
+                                .font(.headline)
+                                .padding()
+                            ProgressView(value: progress)
+                                .progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                                .padding()
+                        }
                     }
                 }
                 .background(Color.white)
@@ -82,9 +97,29 @@ struct ContentView: View {
     }
 
     private func calculateProgress() -> Double {
-        let totalSquares = 25
-        let markedSquares = viewModel.currentBoard.markers.flatMap { $0 }.filter { $0 }.count
-        return Double(markedSquares) / Double(totalSquares)
+        let board = viewModel.currentBoard.markers
+        var closestLineProgress = 0.0
+
+        // Check rows
+        for row in 0..<5 {
+            let rowProgress = Double(board[row].filter { $0 }.count) / 5.0
+            closestLineProgress = max(closestLineProgress, rowProgress)
+        }
+
+        // Check columns
+        for col in 0..<5 {
+            let colProgress = Double((0..<5).filter { board[$0][col] }.count) / 5.0
+            closestLineProgress = max(closestLineProgress, colProgress)
+        }
+
+        // Check diagonals
+        let diag1Progress = Double((0..<5).filter { board[$0][$0] }.count) / 5.0
+        closestLineProgress = max(closestLineProgress, diag1Progress)
+
+        let diag2Progress = Double((0..<5).filter { board[$0][4 - $0] }.count) / 5.0
+        closestLineProgress = max(closestLineProgress, diag2Progress)
+
+        return closestLineProgress
     }
 }
 
