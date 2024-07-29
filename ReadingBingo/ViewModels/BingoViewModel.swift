@@ -1,12 +1,35 @@
 import Foundation
 
 class BingoViewModel: ObservableObject {
-    @Published var bingoBoards: [BingoBoard]
-    @Published var currentBoard: BingoBoard
+    @Published var bingoBoards: [BingoBoard] {
+        didSet {
+            saveBoards()
+        }
+    }
+    @Published var currentBoard: BingoBoard {
+        didSet {
+            saveCurrentBoard()
+        }
+    }
     @Published var isEditingBoardName = false
     @Published var isEditMode = false
 
     init() {
+        // Initialize the properties first
+        self.bingoBoards = []
+        self.currentBoard = BingoViewModel.createDefaultBoard()
+
+        // Load the boards and current board from UserDefaults
+        if let loadedBoards = Self.loadBoards(), let loadedCurrentBoard = Self.loadCurrentBoard() {
+            self.bingoBoards = loadedBoards
+            self.currentBoard = loadedCurrentBoard
+        } else {
+            self.bingoBoards = [Self.createDefaultBoard()]
+            self.currentBoard = self.bingoBoards.first!
+        }
+    }
+
+    static func createDefaultBoard() -> BingoBoard {
         let exampleCategories = [
             "Fantasy", "Science Fiction", "Mystery", "Biography", "Non-fiction",
             "Romance", "Thriller", "Historical", "Young Adult", "Classic",
@@ -14,29 +37,8 @@ class BingoViewModel: ObservableObject {
             "Poetry", "Drama", "Short Story", "Children's", "Dystopian",
             "Crime", "Memoir", "Paranormal", "Travel", "Cookbook"
         ]
-        
-        let classicCategories = [
-            "To Kill a Mockingbird", "1984", "Pride and Prejudice", "The Great Gatsby", "Moby Dick",
-            "War and Peace", "The Catcher in the Rye", "Crime and Punishment", "The Odyssey", "Les Misérables",
-            "Jane Eyre", "The Brothers Karamazov", "Wuthering Heights", "Great Expectations", "Dracula",
-            "A Tale of Two Cities", "Anna Karenina", "Madame Bovary", "The Iliad", "Heart of Darkness",
-            "The Divine Comedy", "Frankenstein", "The Picture of Dorian Gray", "Don Quixote", "Brave New World"
-        ]
-        
-        let genreCategories = [
-            "Romantic Comedy", "Psychological Thriller", "Epic Fantasy", "Space Opera", "Hard Science Fiction",
-            "Legal Thriller", "Historical Romance", "Military Science Fiction", "Steampunk", "Western",
-            "Cyberpunk", "Urban Fantasy", "Paranormal Romance", "Time Travel", "Alternate History",
-            "Detective Fiction", "Magical Realism", "Post-apocalyptic", "Superhero", "Gothic Fiction",
-            "Spy Fiction", "Mythopoeia", "Sword and Sorcery", "Technothriller", "Weird Fiction"
-        ]
 
-        let exampleBoard = BingoViewModel.createBoard(name: "Basic Book Bingo", categories: exampleCategories)
-        let classicBoard = BingoViewModel.createBoard(name: "Classics", categories: classicCategories)
-        let genreBoard = BingoViewModel.createBoard(name: "Genres", categories: genreCategories)
-
-        self.bingoBoards = [exampleBoard, classicBoard, genreBoard]
-        self.currentBoard = exampleBoard
+        return createBoard(name: "Example", categories: exampleCategories)
     }
 
     static func createBoard(name: String, categories: [String]) -> BingoBoard {
@@ -109,5 +111,39 @@ class BingoViewModel: ObservableObject {
             currentBoard = bingoBoards.first!
             self.isEditMode = false // Default to play mode
         }
+    }
+
+    private func saveBoards() {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(bingoBoards) {
+            UserDefaults.standard.set(encoded, forKey: "bingoBoards")
+        }
+    }
+
+    private func saveCurrentBoard() {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(currentBoard) {
+            UserDefaults.standard.set(encoded, forKey: "currentBoard")
+        }
+    }
+
+    private static func loadBoards() -> [BingoBoard]? {
+        if let savedData = UserDefaults.standard.data(forKey: "bingoBoards") {
+            let decoder = JSONDecoder()
+            if let decoded = try? decoder.decode([BingoBoard].self, from: savedData) {
+                return decoded
+            }
+        }
+        return nil
+    }
+
+    private static func loadCurrentBoard() -> BingoBoard? {
+        if let savedData = UserDefaults.standard.data(forKey: "currentBoard") {
+            let decoder = JSONDecoder()
+            if let decoded = try? decoder.decode(BingoBoard.self, from: savedData) {
+                return decoded
+            }
+        }
+        return nil
     }
 }

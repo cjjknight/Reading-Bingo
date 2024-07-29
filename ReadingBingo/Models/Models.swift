@@ -1,6 +1,6 @@
 import Foundation
 
-struct BingoSquare: Identifiable, Hashable {
+struct BingoSquare: Identifiable, Hashable, Codable {
     var id = UUID()
     var category: String
     var marked: Bool = false
@@ -28,7 +28,7 @@ struct BingoSquare: Identifiable, Hashable {
     }
 }
 
-struct BingoBoard: Identifiable, Hashable {
+struct BingoBoard: Identifiable, Hashable, Codable {
     var id = UUID()
     var name: String
     var squares: [[BingoSquare]]
@@ -44,7 +44,7 @@ struct BingoBoard: Identifiable, Hashable {
     }
 }
 
-struct SquareIdentifier: Identifiable {
+struct SquareIdentifier: Identifiable, Codable {
     var id: UUID
     var row: Int
     var col: Int
