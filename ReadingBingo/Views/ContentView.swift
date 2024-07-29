@@ -76,6 +76,11 @@ struct ContentView: View {
             .background(Color.gray.opacity(0.1))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Book Bingo")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink(destination: BoardSelectionView().environmentObject(viewModel)) {
                         Image(systemName: "square.grid.2x2.fill")
