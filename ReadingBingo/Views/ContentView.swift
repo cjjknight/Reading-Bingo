@@ -4,6 +4,7 @@ struct ContentView: View {
     @StateObject var viewModel = BingoViewModel()
     @State private var isEditingName = false
     @State private var showUserNamePrompt = false
+    @State private var showAddPlayerPrompt = false
     @State private var userName = "User"
     @State private var selectedSquare: SquareIdentifier?
 
@@ -103,17 +104,29 @@ struct ContentView: View {
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showUserNamePrompt.toggle()
-                    }) {
-                        Image(systemName: "person.circle")
-                            .imageScale(.large)
-                            .padding()
+                    HStack {
+                        Button(action: {
+                            showAddPlayerPrompt.toggle()
+                        }) {
+                            Image(systemName: "plus")
+                                .imageScale(.large)
+                                .padding()
+                        }
+                        Button(action: {
+                            showUserNamePrompt.toggle()
+                        }) {
+                            Image(systemName: "person.circle")
+                                .imageScale(.large)
+                                .padding()
+                        }
                     }
                 }
             }
             .sheet(isPresented: $showUserNamePrompt) {
                 UserNamePrompt(userName: $userName, viewModel: viewModel)
+            }
+            .sheet(isPresented: $showAddPlayerPrompt) {
+                AddPlayerPrompt(viewModel: viewModel)
             }
         }
     }
@@ -185,6 +198,33 @@ struct UserNamePrompt: View {
 
             Button("Save") {
                 viewModel.currentUserName = userName
+                presentationMode.wrappedValue.dismiss()
+            }
+            .padding()
+        }
+        .padding()
+    }
+}
+
+struct AddPlayerPrompt: View {
+    @State private var newPlayerName = ""
+    @Environment(\.presentationMode) var presentationMode
+    var viewModel: BingoViewModel
+
+    var body: some View {
+        VStack {
+            Text("Add a new player:")
+                .font(.headline)
+                .padding()
+
+            TextField("Player Name", text: $newPlayerName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            Button("Add Player") {
+                if !newPlayerName.isEmpty {
+                    viewModel.addPlayerToCurrentBoard(playerName: newPlayerName)
+                }
                 presentationMode.wrappedValue.dismiss()
             }
             .padding()

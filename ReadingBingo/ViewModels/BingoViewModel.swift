@@ -106,6 +106,15 @@ class BingoViewModel: ObservableObject {
         }
     }
 
+    func addPlayerToCurrentBoard(playerName: String) {
+        if let index = bingoBoards.firstIndex(where: { $0.id == currentBoard.id }) {
+            if !bingoBoards[index].players.contains(playerName) {
+                bingoBoards[index].players.append(playerName)
+                self.currentBoard = bingoBoards[index]
+            }
+        }
+    }
+
     func saveBoards() {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(bingoBoards) {
