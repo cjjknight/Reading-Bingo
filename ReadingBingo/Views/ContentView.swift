@@ -40,6 +40,23 @@ struct ContentView: View {
                     .environmentObject(viewModel)
 
                 Spacer()
+
+                // Status Area
+                VStack {
+                    if viewModel.isEditMode {
+                        Text("Edit Mode")
+                            .font(.headline)
+                            .padding()
+                    } else {
+                        ProgressView(value: calculateProgress())
+                            .progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                            .padding()
+                    }
+                }
+                .background(Color.white)
+                .cornerRadius(10)
+                .shadow(radius: 5)
+                .padding()
             }
             .background(Color.gray.opacity(0.1))
             .navigationBarTitleDisplayMode(.inline)
@@ -62,6 +79,12 @@ struct ContentView: View {
                 }
             }
         }
+    }
+
+    private func calculateProgress() -> Double {
+        let totalSquares = 25
+        let markedSquares = viewModel.currentBoard.markers.flatMap { $0 }.filter { $0 }.count
+        return Double(markedSquares) / Double(totalSquares)
     }
 }
 
