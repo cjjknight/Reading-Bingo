@@ -61,7 +61,7 @@ struct ContentView: View {
                                 .cornerRadius(10)
                                 .shadow(radius: 5)
                         } else {
-                            Text("Closest line: \(Int(progress * 100))% complete")
+                            Text(getProgressMessage(for: progress))
                                 .font(.headline)
                                 .padding()
                             ProgressView(value: progress)
@@ -140,6 +140,23 @@ struct ContentView: View {
 
         return closestLineProgress
     }
+
+    private func getProgressMessage(for progress: Double) -> String {
+        switch progress {
+        case 0.0:
+            return "\(userName), you haven't started yet."
+        case 0.2:
+            return "\(userName), you're 20% there. Keep going!"
+        case 0.4:
+            return "\(userName), you're 40% there. Keep up the good work!"
+        case 0.6:
+            return "\(userName), you're 60% there. Almost there!"
+        case 0.8:
+            return "\(userName), you're 80% there. Just a bit more!"
+        default:
+            return "\(userName), you're getting closer!"
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -150,6 +167,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct UserNamePrompt: View {
     @Binding var userName: String
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack {
@@ -162,8 +180,7 @@ struct UserNamePrompt: View {
                 .padding()
 
             Button("Save") {
-                // Dismiss the prompt
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                presentationMode.wrappedValue.dismiss()
             }
             .padding()
         }
