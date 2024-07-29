@@ -61,56 +61,16 @@ struct BingoBoardView: View {
             .padding()
 
             Spacer()
-
-            // Progress Indicator
-            ProgressView(value: calculateProgress())
-                .progressViewStyle(LinearProgressViewStyle(tint: .blue))
-                .padding()
-
-            // Footer Information or Buttons
-            VStack {
-                Text("Complete your reading goals!")
-                    .font(.headline)
-                    .padding(.bottom, 4)
-
-                HStack {
-                    Button(action: {
-                        // Action for resetting the board
-                    }) {
-                        Text("Reset Board")
-                            .padding()
-                            .background(Color.red)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                    }
-                    .padding(.trailing, 4)
-
-                    Button(action: {
-                        // Action for sharing the board
-                    }) {
-                        Text("Share Board")
-                            .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                    }
-                }
-            }
-            .padding()
-            .background(Color.white)
-            .cornerRadius(10)
-            .shadow(radius: 5)
         }
         .background(Color.gray.opacity(0.1))
         .sheet(item: $selectedSquare) { square in
-            EditSquareView(row: square.row, col: square.col)
-                .environmentObject(viewModel)
+            if viewModel.isEditMode {
+                EditSquareView(row: square.row, col: square.col)
+                    .environmentObject(viewModel)
+            } else {
+                ClaimSquareView(row: square.row, col: square.col)
+                    .environmentObject(viewModel)
+            }
         }
-    }
-
-    private func calculateProgress() -> Double {
-        let totalSquares = 25
-        let markedSquares = viewModel.currentBoard.markers.flatMap { $0 }.filter { $0 }.count
-        return Double(markedSquares) / Double(totalSquares)
     }
 }

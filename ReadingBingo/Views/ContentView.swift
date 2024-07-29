@@ -7,7 +7,11 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text(viewModel.currentBoard.name)
+                if viewModel.isEditMode {
+                    TextField("Board Name", text: Binding(
+                        get: { viewModel.currentBoard.name },
+                        set: { viewModel.renameCurrentBoard(newName: $0) }
+                    ))
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -18,6 +22,19 @@ struct ContentView: View {
                             .shadow(radius: 10)
                     )
                     .padding()
+                } else {
+                    Text(viewModel.currentBoard.name)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                                .shadow(radius: 10)
+                        )
+                        .padding()
+                }
 
                 BingoBoardView()
                     .environmentObject(viewModel)
@@ -30,6 +47,15 @@ struct ContentView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink(destination: BoardSelectionView().environmentObject(viewModel)) {
                         Image(systemName: "square.grid.2x2.fill")
+                            .imageScale(.large)
+                            .padding()
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        viewModel.isEditMode.toggle()
+                    }) {
+                        Image(systemName: "pencil")
                             .imageScale(.large)
                             .padding()
                     }

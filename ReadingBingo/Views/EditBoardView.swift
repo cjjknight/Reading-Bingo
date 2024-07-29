@@ -1,8 +1,25 @@
-//
-//  EditBoardView.swift
-//  ReadingBingo
-//
-//  Created by Christopher Johnson on 7/28/24.
-//
+import SwiftUI
 
-import Foundation
+struct EditBoardView: View {
+    @EnvironmentObject var viewModel: BingoViewModel
+
+    var body: some View {
+        VStack {
+            Text("Edit Mode")
+                .font(.largeTitle)
+                .padding()
+
+            // Add any additional editing controls here
+            BingoBoardView()
+                .environmentObject(viewModel)
+        }
+        .padding()
+    }
+}
+
+struct EditBoardView_Previews: PreviewProvider {
+    static var previews: some View {
+        EditBoardView()
+            .environmentObject(BingoViewModel())
+    }
+}
